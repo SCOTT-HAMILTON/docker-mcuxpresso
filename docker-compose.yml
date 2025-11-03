@@ -1,26 +1,35 @@
-version: "3.7"
 services:
-   mcuexpresso-dev:
+  mcuexpresso-dev:
     build:
       context: ./
       args:
-       # Customize your IDE version here
-       IDE_VERSION: 11.3.1_5262
-       USERNAME: root
-       UID: 0
-       GID: 0
+        IDE_VERSION: 25.6.136
+        LINK_SERVER_VERSION: 25.7.33
+        USERNAME: scott
+        UID: ${UID}
+        GID: ${GID}
     privileged: true
     stdin_open: true
     tty: true
+    user: "${UID}:${GID}"   # run as your host user, not root
     environment:
-      - DISPLAY=unix:1
+      - DISPLAY=${DISPLAY}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+      - XDG_RUNTIME_DIR=/run/user/${UID}
+      - PULSE_SERVER=unix:/run/user/${UID}/pulse/native
+      - DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${UID}/bus
     volumes:
       - ./:/mnt
-      # dbus
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /etc/machine-id:/var/lib/dbus/machine-id
-      - /var/run/dbus:/var/run/dbus
-      # X11 Forwarding
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/scott/Documents/MCUXpresso_25.6.136/workspace:/home/scott/Documents/MCUXpresso_25.6.136/workspace
+      - /run/user/${UID}/wayland-0:/run/user/${UID}/wayland-0
+      - /run/user/${UID}/pulse/native:/run/user/${UID}/pulse/native
+      - /run/user/${UID}/dconf:/run/user/${UID}/dconf
+      - /run/user/${UID}/bus:/run/user/${UID}/bus
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri:/dev/dri
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     image: mcuexpresso-dev:latest
-    container_name:  mcuexpresso-dev
+    container_name: mcuexpresso-dev

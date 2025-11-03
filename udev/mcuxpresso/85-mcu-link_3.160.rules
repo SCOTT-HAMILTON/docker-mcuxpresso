@@ -1,0 +1,21 @@
+#
+# Copyright 2020, 2023 NXP
+#
+# Udev rules for MCU-Link USB Devices
+# Allow read-write access for all users
+# This file is automatically copied by the MCU-LINK installer to /usr/lib/udev/rules.d
+
+# MCU-Link CMSIS-DAP
+KERNEL=="hidraw*", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0143", MODE="0666"
+
+# MCU-Link CMSIS-DAP (WinUSB)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0143", MODE="0666"
+
+# MCU-Link VCOM
+KERNEL=="ttyACM*", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0143", MODE="0666"
+
+# MCU-Link (with J-Link firmware) VCOM
+KERNEL=="ttyACM*", ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1024", MODE="0666"
+
+# MCU-Link ISP mode (FW update)
+KERNEL=="hidraw*", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0021", MODE="0666"
